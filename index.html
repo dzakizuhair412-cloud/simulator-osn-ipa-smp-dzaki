@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulator OSN IPA - Premium Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-atom"></i> OSN <span>Science Quiz</span>
+        </div>
+        <div class="theme-accent">Simulasi Tingkat Nasional</div>
+    </header>
+
+    <div class="container">
+        <section id="home-screen" class="active">
+            <div class="welcome-box">
+                <h1>Selamat Datang di Simulator OSN IPA</h1>
+                <p>Pilih salah satu paket simulasi di bawah ini. Setiap paket berisi <strong>20 soal pilihan ganda</strong> yang mencakup materi <strong>Biologi, Fisika, dan Kimia</strong> tingkat Olimpiade Sains Nasional dengan alokasi waktu <strong>60 menit</strong>.</p>
+            </div>
+            
+            <div class="paket-grid">
+                <div class="paket-card" onclick="startSimulation(1)">
+                    <div class="paket-badge">Paket 1</div>
+                    <h3>Simulasi Dasar & Analisis</h3>
+                    <p>20 Soal | 60 Menit</p>
+                    <button class="btn-start">Mulai Paket 1</button>
+                </div>
+                <div class="paket-card" onclick="startSimulation(2)">
+                    <div class="paket-badge">Paket 2</div>
+                    <h3>Eksperimen & Penalaran</h3>
+                    <p>20 Soal | 60 Menit</p>
+                    <button class="btn-start">Mulai Paket 2</button>
+                </div>
+                <div class="paket-card" onclick="startSimulation(3)">
+                    <div class="paket-badge">Paket 3</div>
+                    <h3>Integrasi Sains Terpadu</h3>
+                    <p>20 Soal | 60 Menit</p>
+                    <button class="btn-start">Mulai Paket 3</button>
+                </div>
+                <div class="paket-card" onclick="startSimulation(4)">
+                    <div class="paket-badge">Paket 4</div>
+                    <h3>Analisis Tingkat Lanjut</h3>
+                    <p>20 Soal | 60 Menit</p>
+                    <button class="btn-start">Mulai Paket 4</button>
+                </div>
+                <div class="paket-card" onclick="startSimulation(5)">
+                    <div class="paket-badge">Paket 5</div>
+                    <h3>Prediksi OSN Utama</h3>
+                    <p>20 Soal | 60 Menit</p>
+                    <button class="btn-start">Mulai Paket 5</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz-screen">
+            <div class="quiz-header">
+                <div class="quiz-info">
+                    <span id="current-paket-title">Paket 1</span>
+                    <span id="question-counter">Soal 1 dari 20</span>
+                </div>
+                <div class="timer-box">
+                    <i class="fa-regular fa-clock"></i> <span id="timer">60:00</span>
+                </div>
+            </div>
+
+            <div class="number-nav" id="number-nav-grid">
+                </div>
+
+            <div class="question-container">
+                <div class="category-tag" id="question-category">Biologi</div>
+                <div class="question-text" id="question-text">Memuat soal...</div>
+                
+                <div class="options-list" id="options-container">
+                    </div>
+            </div>
+
+            <div class="quiz-footer">
+                <button class="btn-nav" id="btn-prev" onclick="prevQuestion()"><i class="fa-solid fa-arrow-left"></i> Sebelumnya</button>
+                <button class="btn-nav btn-ragu" id="btn-flag" onclick="toggleRagu()"><i class="fa-regular fa-flag"></i> Ragu-ragu</button>
+                <button class="btn-nav" id="btn-next" onclick="nextQuestion()">Selanjutnya <i class="fa-solid fa-arrow-right"></i></button>
+                <button class="btn-submit hidden" id="btn-finish" onclick="confirmFinish()">Selesai Ujian</button>
+            </div>
+        </section>
+
+        <section id="result-screen">
+            <div class="result-box">
+                <h2><i class="fa-solid fa-square-poll-vertical"></i> Hasil Analisis Evaluasi Ujian</h2>
+                <p>Berikut adalah rincian performa nilai Anda berdasarkan bidang uji OSN IPA:</p>
+                
+                <div class="score-summary">
+                    <div class="total-score">
+                        <span class="score-num" id="final-score">0</span>
+                        <span class="score-label">Skor Total (Skala 100)</span>
+                    </div>
+                    <div class="status-summary">
+                        <div><i class="fa-solid fa-circle-check text-success"></i> Benar: <strong id="total-correct">0</strong></div>
+                        <div><i class="fa-solid fa-circle-xmark text-danger"></i> Salah: <strong id="total-wrong">0</strong></div>
+                        <div><i class="fa-solid fa-circle-minus text-warning"></i> Kosong: <strong id="total-empty">0</strong></div>
+                    </div>
+                </div>
+
+                <h3>Persentase Per Bidang Materi:</h3>
+                
+                <div class="category-result">
+                    <div class="category-res-header">
+                        <span><i class="fa-solid fa-dna"></i> BIOLOGI</span>
+                        <span id="biologi-pct">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="biologi-bar" style="width: 0%"></div>
+                    </div>
+                    <small id="biologi-detail">Benar 0 dari 0 soal</small>
+                </div>
+
+                <div class="category-result">
+                    <div class="category-res-header">
+                        <span><i class="fa-solid fa-bolt"></i> FISIKA</span>
+                        <span id="fisika-pct">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="fisika-bar" style="width: 0%"></div>
+                    </div>
+                    <small id="fisika-detail">Benar 0 dari 0 soal</small>
+                </div>
+
+                <div class="category-result">
+                    <div class="category-res-header">
+                        <span><i class="fa-solid fa-flask"></i> KIMIA</span>
+                        <span id="kimia-pct">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="kimia-bar" style="width: 0%"></div>
+                    </div>
+                    <small id="kimia-detail">Benar 0 dari 0 soal</small>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-home" onclick="backToHome()"><i class="fa-solid fa-house"></i> Kembali ke Menu Utama</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        &copy; 2026 Simulator OSN IPA. Crafted for Excellence.
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
